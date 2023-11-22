@@ -31,7 +31,8 @@ snapshot :; forge snapshot
 
 format :; forge fmt
 
-anvil :; anvil -m 'test test test test test test test test test test test junk' --steps-tracing --block-time 1
+anvil : 
+	@anvil -m 'test test test test test test test test test test test junk' --steps-tracing --block-time 1
 
 NETWORK_ARGS := --rpc-url http://localhost:8545 --private-key $(DEFAULT_ANVIL_KEY) --broadcast
 
@@ -40,10 +41,10 @@ ifeq ($(findstring --network sepolia,$(ARGS)),--network sepolia)
 endif
 
 deploy:
-	@forge script script/DeployAcidNft.s.sol:DeployAcidNft $(NETWORK_ARGS)
+	@forge script script/DeployAcidSvgNft.s.sol:DeployAcidSvgNft $(NETWORK_ARGS)
 
 mint:
-	@forge script script/Interactions.s.sol:MintAcidNft ${NETWORK_ARGS}
+	@forge script script/Interactions.s.sol:MintAcidSvgNft ${NETWORK_ARGS}
 
 deployMood:
 	@forge script script/DeployMoodNft.s.sol:DeployMoodNft $(NETWORK_ARGS)
