@@ -8,16 +8,22 @@ contract AcidNft is ERC721 {
     string public constant SYMBOL = "ACID";
 
     uint256 private s_tokenCounter;
+    mapping(uint256 tokenId => string tokenUri) private s_tokenIdToUri;
 
     constructor() ERC721(NFT_NAME, SYMBOL) {
         s_tokenCounter = 0;
     }
 
-    function mintNft() public {}
+    function mintNft(string memory _tokenUri) public {
+        s_tokenIdToUri[s_tokenCounter] = _tokenUri;
+        //? maps token to msg.sender, increase msg.sender token counter etc...
+        _safeMint(msg.sender, s_tokenCounter);
+        s_tokenCounter++;
+    }
 
     function tokenURI(
         uint256 _tokenId
     ) public view override returns (string memory) {
-        return "";
+        return s_tokenIdToUri[_tokenId];
     }
 }
