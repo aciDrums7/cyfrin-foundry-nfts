@@ -5,17 +5,28 @@ import {ERC721} from "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import {Base64} from "@openzeppelin/contracts/utils/Base64.sol";
 
 contract AcidNft is ERC721 {
+    /**
+     * Errors
+     */
+    error AcidNft__CantSwitchTripIfNotOwner();
+
+    /**
+     * Type Declarations
+     */
+    enum Trip {
+        NORMAL,
+        HEROIC
+    }
+
+    /**
+     * State Variables
+     */
     string public constant NFT_NAME = "BasicNft";
     string public constant SYMBOL = "ACID";
 
     uint256 private s_tokenCounter;
     string private s_normalSvgImageUri;
     string private s_heroicSvgImageUri;
-
-    enum Trip {
-        NORMAL,
-        HEROIC
-    }
 
     mapping(uint256 tokenId => Trip trip) private s_tokenIdToTrip;
 
@@ -32,6 +43,18 @@ contract AcidNft is ERC721 {
         _safeMint(msg.sender, s_tokenCounter);
         s_tokenIdToTrip[s_tokenCounter] = Trip.HEROIC;
         s_tokenCounter++;
+    }
+
+    function switchTrip(uint256 _tokenId) public {
+        // only want the NFT owner to be able to switch the trip
+        if (!_isAuthorized(msg.sender, msg.sender, _tokenId)) {
+            revert AcidNft__CantSwitchTripIfNotOwner();
+        }
+        if (s_tokenIdToTrip[_tokenId] == Trip.HEROIC) {
+            s_tokenIdToTrip[_tokenId] == Trip.NORMAL;
+        } else {
+            s_tokenIdToTrip[_tokenId] == Trip.HEROIC;
+        }
     }
 
     function tokenURI(
