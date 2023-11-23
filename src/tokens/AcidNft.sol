@@ -21,7 +21,7 @@ contract AcidNft is ERC721 {
     /**
      * State Variables
      */
-    string public constant NFT_NAME = "BasicNft";
+    string public constant NFT_NAME = "ShroomNFT";
     string public constant SYMBOL = "ACID";
 
     uint256 private s_tokenCounter;
@@ -45,7 +45,7 @@ contract AcidNft is ERC721 {
         s_tokenCounter++;
     }
 
-    function switchTrip(uint256 _tokenId) public {
+    function switchTrip(uint256 _tokenId) public view {
         // only want the NFT owner to be able to switch the trip
         if (!_isAuthorized(msg.sender, msg.sender, _tokenId)) {
             revert AcidNft__CantSwitchTripIfNotOwner();
@@ -88,5 +88,12 @@ contract AcidNft is ERC721 {
 
     function _baseURI() internal pure override returns (string memory) {
         return "data:application/json;base64,";
+    }
+
+    /**
+     * Getters
+     */
+    function getTripTypeByTokenId(uint256 _tokenId) public view returns (Trip) {
+        return s_tokenIdToTrip[_tokenId];
     }
 }

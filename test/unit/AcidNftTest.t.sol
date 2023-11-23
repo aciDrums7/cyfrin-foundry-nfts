@@ -2,20 +2,22 @@
 pragma solidity ^0.8.20;
 
 import {Test, console} from "forge-std/Test.sol";
-import {AcidNft} from "../../src/AcidNft.sol";
+import {SvgUtils} from "../../src/utils/SvgUtils.sol";
 import {DeployAcidNft} from "../../script/DeployAcidNft.s.sol";
+import {AcidNft} from "../../src/tokens/AcidNft.sol";
 
 contract AcidNftTest is Test {
-    DeployAcidNft public deployer;
+    string public constant NORMAL_TRIP_SVG_PATH = "../img/svg/normal.svg";
+    string public constant HEROIC_TRIP_SVG_PATH = "./img/svg/heroic.svg";
     AcidNft public acidNft;
 
     address public USER = makeAddr("user");
-    string public constant SHROOMS =
-        "ipfs://bafybeiasw3kn6a2vm2jbxy5dsdpb6zpzcxbxmcqdnc7mylqegyrkfenpiy/";
 
     function setUp() public {
-        deployer = new DeployAcidNft();
-        acidNft = deployer.run();
+        acidNft = new AcidNft(
+            SvgUtils.svgToImageURI(NORMAL_TRIP_SVG_PATH),
+            SvgUtils.svgToImageURI(HEROIC_TRIP_SVG_PATH)
+        );
     }
 
     function test_ViewTokenURI() public {

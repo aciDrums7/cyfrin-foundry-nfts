@@ -3,8 +3,8 @@ pragma solidity ^0.8.20;
 
 import {Script} from "forge-std/Script.sol";
 import {DevOpsTools} from "lib/foundry-devops/src/DevOpsTools.sol";
-import {BasicNft} from "../src/BasicNft.sol";
-import {AcidNft} from "../src/AcidNft.sol";
+import {BasicNft} from "../src/tokens/BasicNft.sol";
+import {AcidNft} from "../src/tokens/AcidNft.sol";
 
 contract MintBasicNft is Script {
     string public constant SHROOMS =
