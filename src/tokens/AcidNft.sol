@@ -25,18 +25,18 @@ contract AcidNft is ERC721 {
     string public constant SYMBOL = "ACID";
 
     uint256 private s_tokenCounter;
-    string private s_normalSvgImageUri;
-    string private s_heroicSvgImageUri;
+    string private s_normalSvgImageURI;
+    string private s_heroicSvgImageURI;
 
     mapping(uint256 tokenId => Trip trip) private s_tokenIdToTrip;
 
     constructor(
-        string memory _normalSvgImageUri,
-        string memory _heroicSvgImageUri
+        string memory _normalSvgImageURI,
+        string memory _heroicSvgImageURI
     ) ERC721(NFT_NAME, SYMBOL) {
         s_tokenCounter = 0;
-        s_normalSvgImageUri = _normalSvgImageUri;
-        s_heroicSvgImageUri = _heroicSvgImageUri;
+        s_normalSvgImageURI = _normalSvgImageURI;
+        s_heroicSvgImageURI = _heroicSvgImageURI;
     }
 
     function mintNft() public {
@@ -45,15 +45,15 @@ contract AcidNft is ERC721 {
         s_tokenCounter++;
     }
 
-    function switchTrip(uint256 _tokenId) public view {
+    function switchTrip(uint256 _tokenId) public {
         // only want the NFT owner to be able to switch the trip
         if (!_isAuthorized(msg.sender, msg.sender, _tokenId)) {
             revert AcidNft__CantSwitchTripIfNotOwner();
         }
         if (s_tokenIdToTrip[_tokenId] == Trip.HEROIC) {
-            s_tokenIdToTrip[_tokenId] == Trip.NORMAL;
+            s_tokenIdToTrip[_tokenId] = Trip.NORMAL;
         } else {
-            s_tokenIdToTrip[_tokenId] == Trip.HEROIC;
+            s_tokenIdToTrip[_tokenId] = Trip.HEROIC;
         }
     }
 
@@ -62,25 +62,21 @@ contract AcidNft is ERC721 {
     ) public view override returns (string memory tokenMetadata) {
         string memory imageURI;
         if (s_tokenIdToTrip[_tokenId] == Trip.HEROIC) {
-            imageURI = s_heroicSvgImageUri;
+            imageURI = s_heroicSvgImageURI;
         } else {
-            imageURI = s_normalSvgImageUri;
+            imageURI = s_normalSvgImageURI;
         }
         //? This is needed to get a JSON tokenURI with SVG as imageURI
-        tokenMetadata = string(
-            abi.encodePacked(
-                _baseURI(),
-                Base64.encode(
-                    bytes(
-                        abi.encodePacked(
-                            '{"name":"',
-                            name(), // You can add whatever name here
-                            '", "description":"Question authority. Think for yourself.", ',
-                            '"attributes": [{"strain_type": "Golden Teacher", "value": 137}], "image":"',
-                            imageURI,
-                            '"}'
-                        )
-                    )
+        tokenMetadata = string.concat(
+            _baseURI(),
+            Base64.encode(
+                abi.encodePacked(
+                    '{"name":"',
+                    name(), // You can add whatever name here
+                    '", "description":"Question authority. Think for yourself.", ',
+                    '"attributes": [{"strain_type": "Golden Teacher", "value": 137}], "image":"',
+                    imageURI,
+                    '"}'
                 )
             )
         );

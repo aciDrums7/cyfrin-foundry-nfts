@@ -41,17 +41,17 @@ ifeq ($(findstring --network sepolia,$(ARGS)),--network sepolia)
 endif
 
 deploy:
-	@forge script script/DeployAcidNft.s.sol:DeployAcidNft $(NETWORK_ARGS)
+	@forge script script/DeployBasicNft.s.sol:DeployBasicNft $(NETWORK_ARGS)
 
 mint:
-	@forge script script/Interactions.s.sol:MintAcidNft ${NETWORK_ARGS}
+	@forge script script/Interactions.s.sol:MintBasicNft ${NETWORK_ARGS}
 
-deployMood:
-	@forge script script/DeployMoodNft.s.sol:DeployMoodNft $(NETWORK_ARGS)
+deployAcid:
+	@forge script script/DeployAcidNft.s.sol:DeployAcidNft $(NETWORK_ARGS)
 
-mintMoodNft:
-	@forge script script/Interactions.s.sol:MintMoodNft $(NETWORK_ARGS)
+mintAcid:
+	@forge script script/Interactions.s.sol:MintAcidNft $(NETWORK_ARGS)
 
-flipMoodNft:
-	@forge script script/Interactions.s.sol:FlipMoodNft $(NETWORK_ARGS)
+switchTrip:
+	@forge script script/Interactions.s.sol:SwitchTrip $(NETWORK_ARGS)
 

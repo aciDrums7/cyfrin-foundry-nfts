@@ -40,3 +40,21 @@ contract MintAcidNft is Script {
         vm.stopBroadcast();
     }
 }
+
+contract SwitchTrip is Script {
+    uint256 public constant TOKEN_ID_TO_SWITCH = 0;
+
+    function run() external {
+        address mostRecentlyDeployed = DevOpsTools.get_most_recent_deployment(
+            "AcidNft",
+            block.chainid
+        );
+        switchTripOnContract(mostRecentlyDeployed);
+    }
+
+    function switchTripOnContract(address mostRecentlyDeployed) public {
+        vm.startBroadcast();
+        AcidNft(mostRecentlyDeployed).switchTrip(TOKEN_ID_TO_SWITCH);
+        vm.stopBroadcast();
+    }
+}
