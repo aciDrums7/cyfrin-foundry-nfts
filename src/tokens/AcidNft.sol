@@ -92,4 +92,8 @@ contract AcidNft is ERC721 {
     function getTripTypeByTokenId(uint256 _tokenId) public view returns (Trip) {
         return s_tokenIdToTrip[_tokenId];
     }
+
+    function getTokenCounter() public view returns (uint256) {
+        return s_tokenCounter;
+    }
 }
